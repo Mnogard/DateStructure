@@ -109,7 +109,7 @@ bool DeQueue(LinkQueue &Q,ElemType &x)
 	{
 		return false;
 	}
-	LinkQueue *p = Q.front->next;
+	LinkNode *p = Q.front->next;
 	x = p->data;
 	Q.front->next = p->next;
 	if(Q.rear = p)
