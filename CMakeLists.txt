@@ -5,3 +5,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_executable(List List.cpp)
 add_executable(Stack Stack.cpp)
+add_executable(Queue Queue.cpp)
