@@ -111,10 +111,36 @@ int Index(SString S,SString T)
 	}
 }*/
 
-//定位（KMP算法--优化朴素模式匹配算法）
-int Index_KMP(SString S,SString T,int next[])
+//求模式串的next数组(优化）
+void get_next(SString T,int next[])
 {
-	int i = 1, j = 1;
+	int i = 1,j = 0; //next数组：i：主串（后缀）j：模式串（前缀）
+	next[1] = 0;
+	while(i<T.length)
+	{
+		if(j==0 || T.ch[i]==T.ch[j])
+		{
+			++i;
+			++j;
+			if(T.ch[i]!=T.ch[j])
+			{
+				next[i] = j;
+			}else{
+				next[i] = next[j];
+			}
+			
+		}else{
+			j = next[j];
+		}
+	}
+}
+
+//定位（优化KMP算法--优化朴素模式匹配算法）
+int Index_KMP(SString S,SString T)
+{
+	int i = 1, j = 1; 
+	int next[T.length + 1];
+	get_next(T,next);
 	while(i <= S.length && j <= T.length)
 	{
 		if(j==0 || S.ch[i]==T.ch[j])
