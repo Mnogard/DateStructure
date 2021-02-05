@@ -147,30 +147,113 @@ void QuickSort(int A[],int low,int high)
 	}
 }
 
+//～～～～～～～～～～～～选择排序～～～～～～～～～～～～
+
+//简单选择排序（不稳定）
+void SelectSort(int A[], int n)
+{
+    for(int i= 0;i<n-1,i++)
+    {
+        int min = i;   //记录最小的元素位置
+        for(int j=i+1;j<n;j++)  //找最小的元素
+        {
+            if(A[j]<A[min])
+            {
+                min = j;
+            }
+        }
+        if(min!=i)
+        {
+            swap(A[i],A[min]);
+        }
+    }
+}
+
+//～～～～～～～～～～～～堆排序～～～～～～～～～～～～
+
+//将以k为根的子树调整为大根堆
+void HeadAdjust(int A[],int k,int len)
+{
+    A[0] = A[k];
+    for(int i=2*k;i<=len;i*=2)
+    {
+        if(i<len && A[i]<A[i+1])
+        {
+            i++;
+        }
+        if(A[0]>=A[i])
+        {
+            break;
+        }else{
+            A[k] = A[i];
+            k=i;
+        }
+    }
+    A[k] = A[0];
+}
+
+//建立大根堆
+void BuildMaxHeap(int A[],int len)
+{
+    for(int i=len/2;i>0;i--)
+    {
+        HeadAdjust(A,i,len);
+    }
+}
+
+//堆排序（不稳定）
+void HeapSort(int A[],int len)
+{
+    BuildMaxHeap(A,len);
+    for(int i=len;i>1;i--)
+    {
+        swap(A[i],A[1]);
+        HeadAdjust(A,1,i-1);
+    }
+}
 
 
+//～～～～～～～～～～～～归并排序～～～～～～～～～～～～
 
+//辅助数组B
+int *B = (int *)malloc(n*sizeof(int));
 
+//A[low,mid]和A[mid+1,high]各自有序，将两个部分归并
+void Merge(int A[],int low,int mid,int high)
+{
+    int i,j,k;
+    for(k=low;k<=high;k++)
+    {
+        B[k] = A[k];
+    }
+    for(i=low,j=mid+1,k=i;i<=mid && j<=high;k++)
+    {
+        if(B[i]<=B[j])
+        {
+            A[k] = B[i++];
+        }else{
+            A[k] = B[j++];
+        }
+    }
+    while(i<=mid)
+    {
+        A[k++] = B[i++];
+    }
+    while(j<=high)
+    {
+        A[k++] = B[j++];
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//归并排序
+void MergeSort(int A[],int low,int high)
+{
+    if(low<high)
+    {
+        int mid = (low+high)/2;
+        MergeSort(A,low,mid);
+        MergeSort(A,mid+1,high);
+        Merge(A,low,mid,high);
+    }
+}
 
